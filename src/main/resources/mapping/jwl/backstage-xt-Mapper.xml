@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.accp.dao.jwl.IBackstageDao">
+	<select id="queryAllArea" resultType="com.accp.pojo.Sharea">
+		SELECT *FROM sharea WHERE
+		pid=#{pid}
+	</select>
+
+	<select id="queryById" resultType="com.accp.pojo.Sharea">
+		SELECT *FROM sharea WHERE
+		areaid=#{id}
+	</select>
+
+	<select id="queryAllAdv"
+		resultType="com.accp.pojo.Advertisementtype">
+		SELECT *FROM advertisementtype
+	</select>
+
+	<select id="queryAllAdvVo"
+		resultType="com.accp.vo.jwl.AdvertisementVo">
+		SELECT *FROM advertisement INNER JOIN advertisementtype
+		ON
+		advertisement.atid=advertisementtype.`atid`
+		<where>
+			<if test="atid!=0">
+				advertisement.atid=#{atid}
+			</if>
+		</where>
+	</select>
+
+	<select id="queryAllNews" resultType="com.accp.vo.jwl.NewsVo">
+		SELECT * FROM news
+		INNER JOIN `user` ON news.addRessee=`user`.`userID`
+		<where>
+			newsType=1
+			<if test="userName!=null">
+				AND userName LIKE '%${userName}%'
+			</if>
+		</where>
+	</select>
+
+	<delete id="deleteAdv">
+		DELETE FROM advertisement WHERE aid IN
+		<foreach collection="array" item="id" open="(" close=")"
+			separator=",">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

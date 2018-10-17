@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="layui/css/layui.css" />
+<link rel="stylesheet" href="css/style.css" />
+<title></title>
+</head>
+<body class="oneColLiqCtrHdr">
+	<div id="header">
+		<h1>系统站内信</h1>
+		<form method="get" name="searchform" th:action="@{/jwl/getNews}">
+			<table width="100%">
+				<tbody>
+					<tr>
+						<td>收信用户名: <label for="group_id"></label> <input
+							name="userName" type="text"
+							style="width: 120px; height: 15px; outline: none; border-radius: 5px;" />
+							&nbsp; <input type="submit" class="ys"  id="button"
+							value="搜索"> &nbsp;<input type="submit" class="ys"
+							name="button" id="button" value="发布站内信"> <input
+							type="hidden" name="p" value="1"> <input type="hidden"
+							name="s" value="4">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+	<div style="float: right;">
+		<div class="layui-btn-group">
+			<button class="layui-btn layui-btn-primary layui-btn-sm">
+				<i class="layui-icon">&#xe654;</i>
+			</button>
+		</div>
+	</div>
+	<br>
+	<table width="100%">
+		<thead>
+			<tr>
+				<th width="5%" bgcolor="#ffffff">序号</th>
+				<th width="12%" align="center">收信人</th>
+				<th width="30" align="center">内容</th>
+				<th width="20%" align="center">发信时间</th>
+				<th width="10%" align="center"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="temp,iterState:${news.list}">
+				<td align="center" th:text="${iterState.count}">1</td>
+				<td align="center" th:text="${temp.userName}">测试数据</td>
+				<td align="center" th:text="${temp.content}">测试数据</td>
+				<td align="center" th:text="${#dates.format(temp.sendingTime,'yyyy-MM-dd')}">测试数据</td>
+				<td align="center" ></td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="5" style="text-align: center;"><a
+					th:if="${news.hasPreviousPage}"
+					th:href="@{/jwl/getNews(userName='',p=${news.prePage},s=4)}"><button
+							class="layui-btn layui-btn-primary layui-btn-sm">
+							<i class="layui-icon">&#xe65a;</i>上一页
+						</button></a> &nbsp; <a th:if="${news.hasNextPage}"
+					th:href="@{/jwl/getNews(userName='',p=${news.nextPage},s=4)}"><button
+							class="layui-btn layui-btn-primary layui-btn-sm">
+							下一页 <i class="layui-icon">&#xe65b;</i>
+						</button></a></td>
+			</tr>
+		</tfoot>
+	</table>
+</body>
+<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="layui/layui.js"></script>
+<script>
+	//Demo
+	layui.use('form', function() {
+		var form = layui.form;
+
+		//监听提交
+		form.on('submit(formDemo)', function(data) {
+			layer.msg(JSON.stringify(data.field));
+			return false;
+		});
+	});
+</script>
+</html>

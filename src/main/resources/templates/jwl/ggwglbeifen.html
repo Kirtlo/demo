@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link href="css/select.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="layui/css/layui.css" />
+<title></title>
+</head>
+<body>
+	<blockquote class="layui-elem-quote" style="padding-bottom: 0px;">
+		<h3>广告管理</h3>
+		<select class="city" >
+			<option value="0">--请选择--</option>
+			<option th:each="temp,iterState:${fl}" th:value="${temp.atid}"
+				th:text="${temp.atname}"></option>
+		</select>
+	</blockquote>
+	<div style="float: right;">
+		<div class="layui-btn-group">
+			<button class="layui-btn layui-btn-primary layui-btn-sm all"
+				onClick="selectAll()">
+				<i class="layui-icon">&#x1005;</i>
+			</button>
+			<button class="layui-btn layui-btn-primary layui-btn-sm">
+				<i class="layui-icon">&#xe654;</i>
+			</button>
+			<button class="layui-btn layui-btn-primary layui-btn-sm del">
+				<i class="layui-icon">&#xe640;</i>
+			</button>
+		</div>
+	</div>
+	<table class="layui-table" lay-size="sm">
+		<thead>
+			<tr>
+				<th></th>
+				<th>ID</th>
+				<th>排序</th>
+				<th>标题</th>
+				<th>图片</th>
+				<th>分类</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="temp,iterState:${AdvVo.list}">
+				<td><input type="checkbox" th:value="${temp.aid}"></td>
+				<td th:text="${temp.aid}">测试数据</td>
+				<td th:text="${temp.aorder}">测试数据</td>
+				<td th:text="${temp.atitle}">测试数据</td>
+				<td><img th:src="'img/'+${temp.aimgPath}"
+					th:height="${temp.atpx}" width="100"></td>
+				<td th:text="${temp.atname}">测试数据</td>
+				<td><button class="layui-btn layui-btn-primary layui-btn-sm">
+						<i class="layui-icon">&#xe642;</i>修改
+					</button></td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="7" style="text-align: center;"><a
+					th:if="${AdvVo.hasPreviousPage}"
+					th:href="@{/jwl/getAdvVo(atid=${atid},p=${AdvVo. prePage},s=4)}"><button
+							class="layui-btn layui-btn-primary layui-btn-sm">
+							<i class="layui-icon">&#xe65a;</i>上一页
+						</button></a> &nbsp; <a th:if="${AdvVo.hasNextPage}"
+					th:href="@{/jwl/getAdvVo(atid=${atid},p=${AdvVo.nextPage},s=4)}"><button
+							class="layui-btn layui-btn-primary layui-btn-sm">
+							下一页 <i class="layui-icon">&#xe65b;</i>
+						</button></a></td>
+			</tr>
+		</tfoot>
+	</table>
+</body>
+<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="layui/layui.js"></script>
+<script>
+	//Demo
+	layui.use('form', function() {
+		var form = layui.form;
+
+		//监听提交
+		form.on('submit(formDemo)', function(data) {
+			layer.msg(JSON.stringify(data.field));
+			return false;
+		});
+	});
+	function selectAll() {
+		var key = $(".all").val();
+		$("input[type='checkbox']").each(function() {
+			if (key == 0) {
+				$("input[type='checkbox']").prop('checked', false);
+				$(".all").val("1")
+			} else {
+				$("input[type='checkbox']").prop('checked', true);
+				$(".all").val("0")
+			}
+		});
+	}
+	function check() {
+		alert(22)
+	}
+	$(function() {
+		$('select').searchableSelect();
+		$(document).on("click", ".del", function() {
+			if (confirm("确定删除")) {
+				var chk = 0; //选中数量
+				var valArr = new Array;//存放主键
+				$("tbody :checkbox").each(function(i) {
+					if ($(this).prop("checked") == true) {
+						valArr[i] = $(this).val();
+						chk++;
+					}
+				});
+				if (chk == 0) {
+					alert("未选中选项");
+					return;
+				}
+				var vals = valArr.join(',');
+				alert(vals);
+			}
+		});
+	});
+</script>
+</html>

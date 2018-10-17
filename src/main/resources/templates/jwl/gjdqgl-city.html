@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="layui/css/layui.css" />
+<title></title>
+<style type="text/css">
+body {
+	margin: 8px;
+}
+h1{display: block;
+	font-size: 24px;
+	margin-block-start: 0.67em;
+	margin-block-end: 0.67em;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+	font-weight: bold;}
+thead th {
+	height: 25px;
+}
+
+tbody td, tfoot td {
+	height: 45px;
+}
+</style>
+</head>
+<body>
+	<div id="header">
+		<h1>城市管理</h1>
+	</div>
+	<span style="font-size: 18px;" th:text="'省份：'+${city.name}"></span>
+	<div style="margin-left: 338px;">
+		<div class="layui-btn-group">
+			<button class="layui-btn layui-btn-primary layui-btn-sm all"
+				onclick="selectAll()" value="1">
+				<i class="layui-icon">&#x1005;</i>
+			</button>
+			<button class="layui-btn layui-btn-primary layui-btn-sm del">
+				<i class="layui-icon">&#xe640;</i>
+			</button>
+			<button class="layui-btn layui-btn-primary layui-btn-sm">
+				<i class="layui-icon">&#xe654;</i>
+			</button>
+			<button class="layui-btn layui-btn-primary layui-btn-sm"
+				onClick="javascript:history.back()">
+				<i class="layui-icon">&#xe65c;</i>
+			</button>
+		</div>
+	</div>
+	<table width="45%">
+		<thead>
+			<tr>
+				<th align="center"></th>
+				<th align="center">名称</th>
+				<th align="center">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="temp,iterState:${list.list}">
+				<td align="center"><input type="checkbox" name="check"
+					th:value="${temp.areaid}"></td>
+				<td align="center" th:text="${temp.name}"></td>
+				<td align="center"><a
+					th:href="@{/jwl/getObj(p=${temp.areaid})}"><button
+							class="layui-btn layui-btn-primary layui-btn-sm">
+							<i class="layui-icon">&#xe642;</i>修改
+						</button></a> &nbsp; <a th:href="@{/jwl/getList(pid=${temp.areaid},p=1,s=8)}"><button
+							class="layui-btn layui-btn-primary layui-btn-sm">
+							<i class="layui-icon">&#xe615;</i>查看
+						</button></a></td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="3" style="text-align: center;"><a
+					th:if="${list.hasPreviousPage}"
+					th:href="@{/jwl/getList(pid=${city.areaid},p=${list. prePage},s=8)}"><button
+							class="layui-btn layui-btn-primary layui-btn-sm">
+							<i class="layui-icon">&#xe65a;</i>上一页
+						</button></a> &nbsp; <a th:if="${list.hasNextPage}"
+					th:href="@{/jwl/getList(pid=${city.areaid},p=${list.nextPage},s=8)}"><button
+							class="layui-btn layui-btn-primary layui-btn-sm">
+							下一页 <i class="layui-icon">&#xe65b;</i>
+						</button></a></td>
+			</tr>
+		</tfoot>
+	</table>
+</body>
+<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="layui/layui.js"></script>
+<script>
+	function selectAll() {
+		var key = $(".all").val();
+		$("input[type='checkbox']").each(function() {
+			if (key == 0) {
+				$("input[type='checkbox']").prop('checked', false);
+				$(".all").val("1")
+			} else {
+				$("input[type='checkbox']").prop('checked', true);
+				$(".all").val("0")
+			}
+		});
+	}
+	$(function() {
+		$(document).on("click", ".del", function() {
+			if (confirm("确定删除")) {
+				var chk = 0; //选中数量
+				var valArr = new Array;//存放主键
+				$("tbody :checkbox").each(function(i) {
+					if ($(this).prop("checked") == true) {
+						valArr[i] = $(this).val();
+						chk++;
+					}
+				});
+				if (chk == 0) {
+					alert("未选中选项");
+					return;
+				}
+				var vals = valArr.join(',');
+				alert(vals);
+			}
+		});
+	});
+</script>
+</html>

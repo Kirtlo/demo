@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/jwl/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/jwl/layui/css/layui.css" />
+<title></title>
+</head>
+<body>
+	<blockquote class="layui-elem-quote"><h3>城市管理</h3></blockquote>
+	<br>
+	<form class="layui-form" action="" th:each="temp,iterState:${list}">
+		<div class="layui-form-item">
+			<label class="layui-form-label"
+				style="margin-left: 20px; font-size: 16px;">城市：</label>
+			<div class="layui-input-block">
+				<input style="width: 255px;" type="text" name="city" required
+					lay-verify="required" placeholder="请输入标题" autocomplete="off"
+					class="layui-input" th:value="${temp.name}">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn layui-btn-sm" lay-submit
+					lay-filter="formDemo">保存</button>
+				<button type="button"
+					class="layui-btn layui-btn-primary layui-btn-sm"
+					onClick="javascript:history.back()">
+					<i class="layui-icon">&#xe65c;</i>
+				</button>
+			</div>
+		</div>
+	</form>
+</body>
+<script type="text/javascript" src="/jwl/js/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="/jwl/layui/layui.js"></script>
+<script>
+	//Demo
+	layui.use('form', function() {
+		var form = layui.form;
+
+		//监听提交
+		form.on('submit(formDemo)', function(data) {
+			layer.msg(JSON.stringify(data.field));
+			return false;
+		});
+	});
+</script>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="x5-orientation"content="portrait">
+    <title></title>
+</head>
+<body>
+    <table></table>
+    <script src="js/jquery-1.12.4.js"></script>
+    <script>
+    $(function(){
+        var data = [{'name':'经理AA'},{'name':'经理BB'},{'name':'经理CC'},{'name':'经理DD'},{'name':'经理EE'},{'name':'经理FF'}];
+        var html = '';
+        $.each(data,function(n,v){
+            html += (n%2==0?'<tr>':'')
+                    +'<td>'+v.name+'</td>'
+                +(n%2==1?'</tr>':'');
+        })
+        console.log(html);
+        $("table").html(html)
+    });
+     
+    </script>
+</body>
+</html>

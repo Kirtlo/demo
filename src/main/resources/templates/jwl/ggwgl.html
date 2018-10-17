@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="layui/css/layui.css" />
+<link rel="stylesheet" href="css/style.css" />
+<title></title>
+</head>
+<body class="oneColLiqCtrHdr">
+	<div id="header">
+		<h1>广告管理</h1>
+		<form method="get" name="searchform" th:action="@{/jwl/getAdvVo}">
+			<table border="0" class="table" cellSpacing="1" cellPadding="6"
+				width="100%">
+				<tbody>
+					<tr>
+						<td> <label for="group_id">按分类查看:</label> <select 
+							name="atid" id="group_id"
+							style="width: 120px; height: 20px; outline: none; border-radius: 5px;">
+								<option value="0">--请选择--</option>
+								<option th:each="temp,iterState:${fl}" th:value="${temp.atid}"
+									th:text="${temp.atname}"></option>
+						</select>&nbsp; <input type="submit" class="ys" name="button" id="button"
+							value="搜索">
+							<input type="hidden" name="p" value="1">
+							<input type="hidden" name="s" value="4">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+	<div style="float: right;">
+		<div class="layui-btn-group">
+			<button class="layui-btn layui-btn-primary layui-btn-sm all"
+				onClick="selectAll()">
+				<i class="layui-icon">&#x1005;</i>
+			</button>
+			<button class="layui-btn layui-btn-primary layui-btn-sm">
+				<i class="layui-icon">&#xe654;</i>
+			</button>
+			<button class="layui-btn layui-btn-primary layui-btn-sm del">
+				<i class="layui-icon">&#xe640;</i>
+			</button>
+		</div>
+	</div>
+	<br>
+	<table width="100%">
+		<thead>
+			<tr>
+				<th width="5%" bgcolor="#ffffff"></th>
+				<th align="center">ID</th>
+				<th align="center">排序</th>
+				<th align="center">标题</th>
+				<th align="center">图片</th>
+				<th align="center">分类</th>
+				<th align="center"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="temp,iterState:${AdvVo.list}">
+				<td align="center"><input type="checkbox" th:value="${temp.aid}"></td>
+				<td  align="center" th:text="${temp.aid}">测试数据</td>
+				<td  align="center" th:text="${temp.aorder}">测试数据</td>
+				<td  align="center" th:text="${temp.atitle}">测试数据</td>
+				<td  align="center"><img th:src="'img/'+${temp.aimgPath}"
+					th:height="${temp.atpx}" width="100"></td>
+				<td  align="center" th:text="${temp.atname}">测试数据</td>
+				<td  align="center"><button class="layui-btn layui-btn-primary layui-btn-sm">
+						<i class="layui-icon">&#xe642;</i>修改
+					</button></td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="7" style="text-align: center;"><a
+					th:if="${AdvVo.hasPreviousPage}"
+					th:href="@{/jwl/getAdvVo(atid=${atid},p=${AdvVo. prePage},s=4)}"><button
+							class="layui-btn layui-btn-primary layui-btn-sm">
+							<i class="layui-icon">&#xe65a;</i>上一页
+						</button></a> &nbsp; <a th:if="${AdvVo.hasNextPage}"
+					th:href="@{/jwl/getAdvVo(atid=${atid},p=${AdvVo.nextPage},s=4)}"><button
+							class="layui-btn layui-btn-primary layui-btn-sm">
+							下一页 <i class="layui-icon">&#xe65b;</i>
+						</button></a></td>
+			</tr>
+		</tfoot>
+	</table>
+</body>
+<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="layui/layui.js"></script>
+<script>
+	//Demo
+	layui.use('form', function() {
+		var form = layui.form;
+
+		//监听提交
+		form.on('submit(formDemo)', function(data) {
+			layer.msg(JSON.stringify(data.field));
+			return false;
+		});
+	});
+	function selectAll() {
+		var key = $(".all").val();
+		$("input[type='checkbox']").each(function() {
+			if (key == 0) {
+				$("input[type='checkbox']").prop('checked', false);
+				$(".all").val("1")
+			} else {
+				$("input[type='checkbox']").prop('checked', true);
+				$(".all").val("0")
+			}
+		});
+	}
+	$(function() {
+		$(document).on("click", ".del", function() {
+			if (confirm("确定删除")) {
+				var chk = 0; //选中数量
+				var valArr = new Array;//存放主键
+				$("tbody :checkbox").each(function(i) {
+					if ($(this).prop("checked") == true) {
+						valArr[i] = $(this).val();
+						chk++;
+					}
+				});
+				if (chk == 0) {
+					alert("未选中选项");
+					return;
+				}
+				var vals = valArr.join(',');
+				location.href="/jwl/re?id="+vals;
+			}
+		});
+	});
+</script>
+</html>

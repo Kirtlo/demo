@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/jwl/css/style.css" />
+<link rel="stylesheet" href="/jwl/layui/css/layui.css" />
+<title></title>
+<style type="text/css">
+h1{display: block;
+	font-size: 24px;
+	margin-block-start: 0.67em;
+	margin-block-end: 0.67em;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+	font-weight: bold;}
+body {
+	margin: 8px;
+}
+thead th{
+	height: 25px;
+}
+tbody td,tfoot td{
+	height: 45px;
+}
+</style>
+</head>
+<body  class="oneColLiqCtrHdr">
+<div id="header">
+		<h1>城市管理</h1>
+	</div>
+	<div style="margin-left: 458px;">
+		<div class="layui-btn-group">
+			<button class="layui-btn layui-btn-primary layui-btn-sm">
+				<i class="layui-icon">&#xe654;</i>
+			</button>
+		</div>
+	</div>
+	<table width="45%">
+		<thead>
+			<tr>
+				<th align="center" bgcolor="#ffffff">地区名</th>
+				<th align="center">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="temp,iterState:${list.list}" >
+				<td th:text="${temp.name}" align="center"></td>
+				<td align="center"><a th:href="@{/jwl/getObj(p=${temp.areaid})}"><button class="layui-btn layui-btn-primary layui-btn-sm">
+						<i class="layui-icon">&#xe642;</i>修改
+					</button></a> &nbsp;
+					<a th:href="@{/jwl/getList(pid=${temp.areaid},p=1,s=8)}"><button class="layui-btn layui-btn-primary layui-btn-sm">
+						<i class="layui-icon">&#xe615;</i>查看
+					</button></a></td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="3" align="center">
+					<a th:if="${list.hasPreviousPage}" th:href="@{/jwl/getList(pid=${temp.areaid},p=${list. prePage},s=8)}"><button class="layui-btn layui-btn-primary layui-btn-sm">
+						<i class="layui-icon">&#xe65a;</i>上一页
+					</button></a> &nbsp;
+					<a th:if="${list.hasNextPage}"  th:href="@{/jwl/getList(pid=${temp.areaid},p=${list.nextPage},s=8)}"><button class="layui-btn layui-btn-primary layui-btn-sm">
+						下一页 <i class="layui-icon">&#xe65b;</i>
+					</button></a>
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+</body>
+<script type="text/javascript" src="/jwl/js/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="/jwl/layui/layui.js"></script>
+</html>
